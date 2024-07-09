@@ -1,0 +1,10 @@
+{
+  "daewoo": {
+    "url": "https://github.com/punarvas/IESL/raw/main/power_forecast/datasets/daewoo.zip",
+    "target_names": ["Steel_industry_data"]
+  },
+  "oakridge": {
+    "url": "https://github.com/punarvas/IESL/raw/main/power_forecast/datasets/oakridge.zip",
+    "target_names": ["Building_Base_Cooling", "Building_Base_Heating", "Weather_Base_Cooling", "Weather_Base_Heating"]
+  }
+}
