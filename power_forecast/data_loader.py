@@ -34,7 +34,7 @@ class Dataset:
     def get_data(self, dataset_name: str):
         dataset = {}
         path_type = self.datasets[dataset_name]["pathtype"]
-        print(path_type)
+        print(f"Loading dataset from source: {path_type}")
         ref = self._download(self.datasets[dataset_name]["url"], path_type)
         target_names = self.datasets[dataset_name]["target_names"]
         fullpath = {}
