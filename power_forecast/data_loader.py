@@ -14,21 +14,28 @@ class Dataset:
         except Exception as ex:
             print(ex)
 
-    def _download(self, url: str):
-        response = requests.get(url)
-        if response.status_code == 200:
-            filename = url.split("/")[-1]
-            file = open(filename, "wb")
-            file.write(response.content)
-            file.close()
-            ref = zipfile.ZipFile(filename, "r")
+    def _download(self, url: str, path_type: str):
+        if path_type == "local":
+            # filename = url.split("/")[-1]
+            ref = zipfile.ZipFile(url, "r")
             return ref
-        else:
-            raise FileNotFoundError("URL does not contain a ZIP file or the specified path cannot be found")
+        elif path_type == "internet":
+            response = requests.get(url)
+            if response.status_code == 200:
+                filename = url.split("/")[-1]
+                file = open(filename, "wb")
+                file.write(response.content)
+                file.close()
+                ref = zipfile.ZipFile(filename, "r")
+                return ref
+            else:
+                raise FileNotFoundError("URL does not contain a ZIP file or the specified path cannot be found")
 
     def get_data(self, dataset_name: str):
         dataset = {}
-        ref = self._download(self.datasets[dataset_name]["url"])
+        path_type = self.datasets[dataset_name]["pathtype"]
+        print(path_type)
+        ref = self._download(self.datasets[dataset_name]["url"], path_type)
         target_names = self.datasets[dataset_name]["target_names"]
         fullpath = {}
         for f in ref.namelist():

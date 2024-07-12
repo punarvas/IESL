@@ -1,10 +1,22 @@
 {
   "daewoo": {
     "url": "https://github.com/punarvas/IESL/raw/main/power_forecast/datasets/daewoo.zip",
-    "target_names": ["Steel_industry_data"]
+    "target_names": ["Steel_industry_data"],
+    "pathtype":"internet"
   },
   "oakridge": {
     "url": "https://github.com/punarvas/IESL/raw/main/power_forecast/datasets/oakridge.zip",
-    "target_names": ["Building_Base_Cooling", "Building_Base_Heating", "Weather_Base_Cooling", "Weather_Base_Heating"]
+    "target_names": ["Building_Base_Cooling", "Building_Base_Heating", "Weather_Base_Cooling", "Weather_Base_Heating"],
+    "pathtype":"internet"
+  },
+  "lawber2020": {
+    "url": "C:\\Users\\akash\\Documents\\IESL\\IESL-gh\\power_forecast\\datasets\\Lawrence_Berkeley\\LawrenceB2020.zip",
+    "target_names": ["ashp_cw", "ashp_hw", "ashp_meter", "ele", "hp_hws_temp", "occ", "rtu_econ_sp", "rtu_fan_spd", "rtu_ma_t", "rtu_oa_damper", "rtu_oa_fr", "rtu_oa_t", "rtu_plenum_p", "rtu_ra_t", "rtu_sa_fr", "rtu_sa_p_sp", "rtu_sa_t", "rtu_sa_t_sp", "site_weather", "uft_fan_spd", "uft_hw_valve", "wifi", "zone_co2", "zone_temp_exterior", "zone_temp_interior", "zone_temp_sp_c", "zone_temp_sp_h"],
+    "pathtype": "local"
+  },
+  "lawber2021": {
+    "url": "C:\\Users\\akash\\Documents\\IESL\\IESL-gh\\power_forecast\\datasets\\Lawrence_Berkeley\\LawrenceB2021.zip",
+    "target_names": ["aru_power", "ashp_terminal_reheat", "economizer", "ele", "hp_hws_temp", "IAQ", "rtu_fan_spd", "rtu_plenum_p", "rtu_sa_fr", "rtu_sa_p_sp", "rtu_sa_t_sp", "rtu_temperature", "site_weather", "uft_fan_spd", "uft_hw_valve", "wifi", "zone_co2", "zone_temp_exterior", "zone_temp_interior", "zone_temp_sp_c", "zone_temp_sp_h"],
+    "pathtype": "local"
   }
 }
