@@ -12,8 +12,8 @@ import torch
 from torch.autograd import Variable
 import torch.nn.functional as func
 import numpy as np
-from util.Priors import Prior, GaussianPrior
-from util.Network import NetConfig
+from DeepNN.util.Priors import Prior, GaussianPrior
+from DeepNN.util.Network import NetConfig
 
 
 class BayesianLayer(nn.Module):
