@@ -12,8 +12,9 @@ import torch
 from torch.autograd import Variable
 import torch.nn.functional as func
 import numpy as np
-from util.Priors import Prior, GaussianPrior
-from util.Network import NetConfig
+from DeepNN.util.Priors import Prior, GaussianPrior
+from DeepNN.util.Network import NetConfig
+import torch.nn.init as init
 
 
 class BayesianLayer(nn.Module):
@@ -25,6 +26,7 @@ class BayesianLayer(nn.Module):
 
         # Learnable parameters -> Initialisation is set empirically.
         # W and b are weights and biases, respectively.
+
         self.W_mean = nn.Parameter(torch.Tensor(self.input_units, self.output_units).uniform_(-0.1, 0.1))
         self.W_spread = nn.Parameter(torch.Tensor(self.input_units, self.output_units).uniform_(-3, -2))
 
