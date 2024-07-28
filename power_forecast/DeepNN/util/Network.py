@@ -5,6 +5,7 @@ Network architecture configuration and model training
 """
 import numpy as np
 from DeepNN.util.Priors import Prior
+from torch.optim.lr_scheduler import ExponentialLR
 from torch.nn import Module, ReLU  # For activation function type restriction
 import torch
 from torch.utils.data import DataLoader
@@ -128,9 +129,8 @@ class Trainer:
             train_history.kl_history.append(mean_kl)
 
             self.train_config.lr_scheduler.step()
-
-            if (epoch+1) % 10 == 0:
-                print(f"Epoch: {epoch+1}, NNL: {mean_nll:.3f}, KL: {mean_kl:.3f}")
+            if (epoch + 1) % 10 == 0:
+                print(f"Epoch: {epoch + 1}, NNL: {mean_nll:.3f}, KL: {mean_kl:.3f}")
 
         # Save the model
 
@@ -141,6 +141,57 @@ class Trainer:
         save_path = os.path.join(model_name, save_file_name)
         torch.save(self.model.state_dict(), save_path)
         return train_history
+
+    def evaluate(self, draw_n_samples: np.int32 = 100):
+        """
+        :param draw_n_samples: How many samples to draw from posterior distribution to generate
+        robust mean and variance for each data point
+        :return: None
+
+        Evaluates the given model on a validation dataset or a test dataset and exports evaluation
+        results in a file which includes target values and sample-wise mean and variance of the predictions
+        """
+        model_name = self.model.config.model_name
+        print(f"Evaluating model: {model_name}")
+        self.model.eval()
+
+        samples_mean, samples_variance = [], []
+        for _ in range(draw_n_samples):
+            y_hat_means, y_hat_variances = [], []  # y_hat means the predictions of the model
+            for _, (features, _) in enumerate(self.validation_loader):
+                features = features.to(self.device)
+                y_hat_mean, y_hat_variance, _ = self.model(features)
+                y_hat_means.append(y_hat_mean.detach().cpu().numpy())
+                y_hat_variances.append(y_hat_variance.detach().cpu().numpy())
+            acc_mean = np.concatenate(y_hat_means, axis=0)
+            acc_variance = np.concatenate(y_hat_variances, axis=0)
+            samples_mean.append(acc_mean)
+            samples_variance.append(acc_variance)
+
+        samples_mean = np.array(samples_mean)
+        samples_variance = np.array(samples_variance)
+
+        mixture_mean = np.mean(samples_mean, axis=0)
+        mixture_variance = np.mean(samples_variance + np.square(samples_mean), axis=0) - np.square(mixture_mean)
+        targets = self.get_targets("validation")
+
+        evaluation_results = {"targets": targets,
+                              "mixture_mean": mixture_mean,
+                              "mixture_variance": mixture_variance}
+        return evaluation_results
+
+    def get_targets(self, set_name: str):
+        targets = []
+        if set_name == "train":
+            for _, (_, target) in enumerate(self.train_loader):
+                targets.append(target.numpy())
+        elif set_name == "validation":
+            for _, (_, target) in enumerate(self.validation_loader):
+                targets.append(target.numpy())
+        else:
+            raise ValueError("Set name is invalid. Choose from [train, validation]")
+
+        return np.concatenate(targets, axis=0)
 
     def _training_device(self):
         device_name = "cuda:0"
