@@ -8,6 +8,7 @@ from DeepNN.util.Priors import Prior
 from torch.nn import Module, ReLU  # For activation function type restriction
 import torch
 from torch.utils.data import DataLoader
+from torch.optim.lr_scheduler import ExponentialLR
 import os
 import json
 
@@ -39,13 +40,14 @@ class NetConfig:
 
 class TrainConfig:
     # Used to initialize training hyperparameters
-    def __init__(self, batch_size: np.int32, epochs: np.int32, optimizer: Module,
+    def __init__(self, batch_size: np.int32, epochs: np.int32, optimizer: torch.optim.Optimizer,
                  loss: Module, learning_rate: np.float32):
         self.batch_size = batch_size
         self.learning_rate = learning_rate
         self.loss = loss
         self.epochs = epochs
         self.optimizer = optimizer
+        self.lr_scheduler = ExponentialLR(self.optimizer, gamma=0.999)
 
     def get_config(self):
         config = {"batch_size": self.batch_size,
@@ -124,6 +126,8 @@ class Trainer:
             train_history.loss_history.append(mean_loss)
             train_history.nll_history.append(mean_nll)
             train_history.kl_history.append(mean_kl)
+
+            self.train_config.lr_scheduler.step()
 
             if (epoch+1) % 10 == 0:
                 print(f"Epoch: {epoch+1}, NNL: {mean_nll:.3f}, KL: {mean_kl:.3f}")
