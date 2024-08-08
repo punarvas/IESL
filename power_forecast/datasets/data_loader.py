@@ -2,6 +2,7 @@ import json
 import zipfile
 import pandas as pd
 import requests
+import numpy as np
 
 
 class Dataset:
@@ -48,3 +49,53 @@ class Dataset:
             df = pd.read_csv(f)
             dataset[t] = df
         return dataset
+
+    def load_time_series(self, df: pd.DataFrame, x_columns: list, y_columns: list,
+                         start_train: str, end_train: str, start_test: str, end_test: str,
+                         forecast_horizon: np.int32, look_back_size: np.int32):
+
+        start_train = pd.to_datetime(start_train)
+        end_train = pd.to_datetime(end_train)
+
+        x = df[x_columns].copy()
+        y = df[y_columns].copy()
+
+        start_train = pd.to_datetime(start_train)
+        end_train = pd.to_datetime(end_train)
+        x_train = x[start_train:end_train]
+        y_train = y[start_train:end_train]
+
+        train_index = y_train.index
+
+        timediff = forecast_horizon * np.ones(shape=(y_train.shape[0], ))
+        for i, diff in enumerate(timediff[:forecast_horizon + 1]):
+            timediff[i] = min(diff, i)
+
+        latest_idx = train_index - pd.to_timedelta(timediff, unit='H')
+        latest_measurement_train = y_train.loc[latest_idx].copy()
+        latest_measurement_train.index = train_index
+        latest_measurement_train = latest_measurement_train.add_prefix('latest_')
+        x_train = pd.concat([latest_measurement_train, x_train], axis=1)
+
+        start_test = pd.to_datetime(start_test) - pd.to_timedelta(look_back_size, unit='H')
+        end_test = pd.to_datetime(end_test)
+        y_test = y[start_test:end_test].copy()
+        test_index = y_test.index
+        x_test = x[start_test:end_test].copy()
+
+        timediff = forecast_horizon * np.ones(shape=(y_test.shape[0],))
+        for i, diff in enumerate(timediff[:forecast_horizon + 1]):
+            timediff[i] = min(diff, i)
+
+        latest_idx = test_index - pd.to_timedelta(timediff, unit='H')
+        latest_measurement_test = y_test.loc[latest_idx].copy()
+        latest_measurement_test.index = test_index
+        latest_measurement_test = latest_measurement_test.add_prefix('latest_')
+        x_test = pd.concat([latest_measurement_test, x_test], axis=1)
+
+        x_train = x_train.values
+        y_train = y_train.values
+        x_test = x_test.values
+        y_test = y_test.values
+
+        return x_train, y_train, x_test, y_test
