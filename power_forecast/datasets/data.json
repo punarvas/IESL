@@ -13,5 +13,11 @@
     "url": "https://github.com/punarvas/IESL/raw/main/power_forecast/datasets/lawber.zip",
     "target_names": ["data"],
     "pathtype": "internet"
+  },
+
+  "new_lawber": {
+    "url": "C:/Users/akash/Documents/IESL/IESL-gh/power_forecast/datasets/new_lawber.zip",
+    "target_names": ["data"],
+    "pathtype": "local"
   }
 }
