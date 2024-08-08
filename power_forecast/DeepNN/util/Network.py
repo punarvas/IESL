@@ -5,7 +5,6 @@ Network architecture configuration and model training
 """
 import numpy as np
 from DeepNN.util.Priors import Prior
-from torch.optim.lr_scheduler import ExponentialLR
 from torch.nn import Module, ReLU  # For activation function type restriction
 import torch
 from torch.utils.data import DataLoader
@@ -42,18 +41,20 @@ class NetConfig:
 class TrainConfig:
     # Used to initialize training hyperparameters
     def __init__(self, batch_size: np.int32, epochs: np.int32, optimizer: torch.optim.Optimizer,
-                 loss: Module, learning_rate: np.float32):
+                 loss: Module, learning_rate: np.float32, save_folder: str):
         self.batch_size = batch_size
         self.learning_rate = learning_rate
         self.loss = loss
         self.epochs = epochs
         self.optimizer = optimizer
         self.lr_scheduler = ExponentialLR(self.optimizer, gamma=0.999)
+        self.save_folder = save_folder
 
     def get_config(self):
         config = {"batch_size": self.batch_size,
                   "learning_rate": self.learning_rate,
-                  "epochs": self.epochs}
+                  "epochs": self.epochs,
+                  "save_folder": self.save_folder}
         return config
 
 
@@ -134,11 +135,11 @@ class Trainer:
 
         # Save the model
 
-        if not os.path.exists(model_name):
-            os.mkdir(model_name)
+        if not os.path.exists(self.train_config.save_folder):
+            os.mkdir(self.train_config.save_folder)
 
-        save_file_name = f"{model_name}_{self.train_config.epochs}_{self.train_config.learning_rate}.pt"
-        save_path = os.path.join(model_name, save_file_name)
+        save_file_name = f"{model_name}_{self.train_config.batch_size}_{self.train_config.epochs}_{self.train_config.learning_rate}.pt"
+        save_path = os.path.join(self.train_config.save_folder, save_file_name)
         torch.save(self.model.state_dict(), save_path)
         return train_history
 
