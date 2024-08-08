@@ -1,3 +1,12 @@
+"""
+@filename: Datasets.py
+@authors: Akash Mahajan, Van Hai Bui
+Preparing time series dataset from numpy arrays of features and targets
+
+Inspired by Abdulmajid-Murad/deep_probabilistic_forecast
+GitHub page: https://github.com/Abdulmajid-Murad/deep_probabilistic_forecast
+"""
+
 from torch.utils.data import Dataset
 import numpy as np
 import torch
@@ -31,3 +40,9 @@ class TimeSeriesDataset(Dataset):
         end = self.indices[index]
         start = end - self.look_back_size
         return start, end
+
+    def transform(self):
+        # Transform the data
+        x_mean = self.x.mean()
+        x_std = self.x.std()
+        self.x = (self.x - x_mean) / x_std
