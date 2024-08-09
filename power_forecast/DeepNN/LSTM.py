@@ -1,6 +1,6 @@
 import torch.nn as nn
 import torch
-from util.Network import NetConfig
+from DeepNN.util.Network import NetConfig
 from torch.autograd import Variable
 import torch.nn.functional as func
 import numpy as np
