@@ -11,6 +11,7 @@ from torch.utils.data import DataLoader
 from torch.optim.lr_scheduler import ExponentialLR
 import os
 import json
+import time
 
 
 class NetConfig:
@@ -26,7 +27,7 @@ class NetConfig:
         self.output_activation = output_activation
         self.hidden_activation = hidden_activation
 
-        self.drop_probability = 0.5   # Special parameters for LSTM
+        self.drop_probability = 0.5  # Special parameters for LSTM
         self.stacked_layers = 2
 
     def add_layer(self, n_units: np.int32):
@@ -90,8 +91,14 @@ class Trainer:
         self.validation_loader = validation_loader
         self.n_batches = len(train_loader)
 
+        self.start_time = None
+        self.end_time = None
+
     def _get_loss(self, output, target):
-        value = self.train_config.loss(output[0], target, output[1]), output[2]
+        try:
+            value = self.train_config.loss(output[0], target, output[1]), output[2]
+        except IndexError:
+            value = self.train_config.loss(output[0], target, output[1])
         return value
 
     def fit(self):
@@ -101,6 +108,8 @@ class Trainer:
         n_samples = 3
         self.model.to(self.device)
         self.model.train()
+
+        self.start_time = time.time()
 
         for epoch in range(self.train_config.epochs):
             epoch_loss, epoch_nll, epoch_kl = [], [], []
@@ -134,7 +143,7 @@ class Trainer:
 
             self.train_config.lr_scheduler.step()
             if (epoch + 1) % 10 == 0:
-                print(f"Epoch: {epoch + 1}, NNL: {mean_nll:.3f}, KL: {mean_kl:.3f}")
+                print(f"Epoch: {epoch + 1}, NLL: {mean_nll:.3f}, KL: {mean_kl:.3f}")
 
         # Save the model
 
@@ -144,6 +153,10 @@ class Trainer:
         save_file_name = f"{model_name}_{self.train_config.batch_size}_{self.train_config.epochs}_{self.train_config.learning_rate}.pt"
         save_path = os.path.join(self.train_config.save_folder, save_file_name)
         torch.save(self.model.state_dict(), save_path)
+
+        self.end_time = time.time()
+        print(f"Training time: {self.time_in_hours():.2f} hour(s)")
+
         return train_history
 
     def evaluate(self, draw_n_samples: np.int32 = 100):
@@ -203,3 +216,79 @@ class Trainer:
         np.random.seed(42)
         device = torch.device(device_name)
         return device
+
+    def time_in_hours(self) -> float:
+        return (self.end_time - self.start_time) / 3600
+
+
+class LSTMTrainer(Trainer):
+    def fit(self):
+        model_name = self.model.config.model_name
+        print(f"Training model: {model_name}")
+        train_history = TrainHistory()
+        self.model.to(self.device)
+        self.model.train()
+
+        self.start_time = time.time()
+
+        for epoch in range(self.train_config.epochs):
+            epoch_loss = []
+            for _, (features, target) in enumerate(self.train_loader):
+                features = features.to(self.device)
+                target = target.to(self.device)
+
+                output = self.model(features)
+                loss = self._get_loss(output, target)
+                loss.backward()
+                self.train_config.optimizer.step()
+                self.train_config.optimizer.zero_grad()
+                epoch_loss.append(loss.item())
+
+            mean_loss = np.mean(epoch_loss)
+            train_history.loss_history.append(mean_loss)
+
+            self.train_config.lr_scheduler.step()
+            if (epoch + 1) % 10 == 0:
+                print(f"Epoch: {epoch + 1}, NLL: {mean_loss:.3f}")
+
+        # Save the model
+        if not os.path.exists(self.train_config.save_folder):
+            os.mkdir(self.train_config.save_folder)
+
+        save_file_name = f"{model_name}_{self.train_config.batch_size}_{self.train_config.epochs}_{self.train_config.learning_rate}.pt"
+        save_path = os.path.join(self.train_config.save_folder, save_file_name)
+        torch.save(self.model.state_dict(), save_path)
+
+        self.end_time = time.time()
+        print(f"Training time: {self.time_in_hours():.2f} hour(s)")
+
+        return train_history
+
+    def evaluate(self, draw_n_samples: np.int32 = 100):
+        model_name = self.model.config.model_name
+        print(f"Evaluating model: {model_name}")
+        self.model.eval()
+
+        samples_mean, samples_variance = [], []
+        for _ in range(draw_n_samples):
+            y_hat_means, y_hat_variances = [], []  # y_hat means the predictions of the model
+            for _, (features, _) in enumerate(self.validation_loader):
+                features = features.to(self.device)
+                y_hat_mean, y_hat_variance = self.model(features)
+                y_hat_means.append(y_hat_mean.detach().cpu().numpy())
+                y_hat_variances.append(y_hat_variance.detach().cpu().numpy())
+            acc_mean = np.concatenate(y_hat_means, axis=0)
+            acc_variance = np.concatenate(y_hat_variances, axis=0)
+            samples_mean.append(acc_mean)
+            samples_variance.append(acc_variance)
+
+        samples_mean = np.array(samples_mean)
+        samples_variance = np.array(samples_variance)
+        mixture_mean = np.mean(samples_mean, axis=0)
+        mixture_variance = np.mean(samples_variance + np.square(samples_mean), axis=0) - np.square(mixture_mean)
+        targets = self.get_targets("validation")
+
+        evaluation_results = {"targets": targets,
+                              "mixture_mean": mixture_mean,
+                              "mixture_variance": mixture_variance}
+        return evaluation_results
