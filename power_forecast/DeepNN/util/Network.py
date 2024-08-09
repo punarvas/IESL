@@ -26,6 +26,9 @@ class NetConfig:
         self.output_activation = output_activation
         self.hidden_activation = hidden_activation
 
+        self.drop_probability = 0.5   # Special parameters for LSTM
+        self.stacked_layers = 2
+
     def add_layer(self, n_units: np.int32):
         self.layer_units.append(n_units)
 
