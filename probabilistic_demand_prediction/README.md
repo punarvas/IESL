@@ -4,10 +4,16 @@ Authors: Akash Mahajan, Van-Hai Bui
 This GitHub repository contains code for building Bayesian Neural Network and Monte-Carlo LSTM (MC-LSTM)
 for implemeting building-level energy demand prediction models for electricity and HVAC.
 
+Our study focused on Building 59 [2], located inside the campus of Lawerence Berkeley
+National Laboratory, for predicting electricity and HVAC demand for next 24 hours. Our study, which is set to publish soon,
+focuses on thorough comparison of Probabilistic and Deterministic approach to prediction.
+
 **Project Structure:**
 - `utils`: Contains code for data preprocessing, evaluation metrics, visualization, and neural network.
 
 Note: We have used PyCharm Community Edition to write all program files.
 
 ----------
-Credits: [Abdulmajid-Murad @ Github, Probabilistic Deep Forecast](https://github.com/Abdulmajid-Murad/deep_probabilistic_forecast) (PyTorch implementation of BNN and MC-LSTM)
+**Credits and References:**
+1. [Abdulmajid-Murad @ GitHub, Probabilistic Deep Forecast](https://github.com/Abdulmajid-Murad/deep_probabilistic_forecast) (PyTorch implementation of BNN and MC-LSTM)
+2. [Benchmark Datasets, Office of Energy Efficiency and Renewable Energy](https://bbd.labworks.org/ds/bbd/lbnlbldg59) (Dataset for Building 59)
