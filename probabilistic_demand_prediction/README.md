@@ -1,4 +1,5 @@
 ## Building-level electricity and HVAC demand prediction
+Authors: Akash Mahajan, Van-Hai Bui
 
 This GitHub repository contains code for building Bayesian Neural Network and Monte-Carlo LSTM (MC-LSTM)
 for implemeting building-level energy demand prediction models for electricity and HVAC.
