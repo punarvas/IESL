@@ -5,8 +5,8 @@ This GitHub repository contains code for building Bayesian Neural Network and Mo
 for implemeting building-level energy demand prediction models for electricity and HVAC.
 
 Our study focused on Building 59 [2], located inside the campus of Lawerence Berkeley
-National Laboratory, for predicting electricity and HVAC demand for next 24 hours. Our study, which is set to publish soon,
-focuses on thorough comparison of Probabilistic and Deterministic approach to prediction.
+National Laboratory, for predicting electricity and HVAC demand for next 24 hours. In this study, 
+thorough comparison of Probabilistic and Deterministic approach to prediction is performed.
 
 **Project Structure:**
 - `utils`: Contains code for data preprocessing, evaluation metrics, visualization, and neural network.
