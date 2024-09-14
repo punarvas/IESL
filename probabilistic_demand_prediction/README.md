@@ -1,6 +1,4 @@
-Probabilistic Energy Demand Prediction
-----
-### Building-level electricity and HVAC demand prediction
+## Building-level electricity and HVAC demand prediction
 
 This GitHub repository contains code for building Bayesian Neural Network and Monte-Carlo LSTM (MC-LSTM)
 for implemeting building-level energy demand prediction models for electricity and HVAC.
