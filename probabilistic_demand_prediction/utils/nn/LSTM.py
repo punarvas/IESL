@@ -1,3 +1,12 @@
+"""
+@filename: Datasets.py
+@authors: Akash Mahajan, Van-Hai Bui
+Preparing time series dataset from numpy arrays of features and targets
+
+Inspired by Abdulmajid-Murad/deep_probabilistic_forecast
+GitHub page: https://github.com/Abdulmajid-Murad/deep_probabilistic_forecast
+"""
+
 import torch.nn as nn
 import torch
 from probabilistic_demand_prediction.utils.Network import NetConfig

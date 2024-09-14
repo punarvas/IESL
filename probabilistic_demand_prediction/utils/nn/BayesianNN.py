@@ -1,6 +1,6 @@
 """
 @filename: BayesianNN.py
-@authors: Akash Mahajan, Van Hai Bui
+@authors: Akash Mahajan, Van-Hai Bui
 Bayesian Neural Network for time series forecasting
 
 Inspired by Abdulmajid-Murad/deep_probabilistic_forecast
