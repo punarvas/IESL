@@ -1,6 +1,6 @@
 """
 @filename: Datasets.py
-@authors: Akash Mahajan, Van Hai Bui
+@authors: Akash Mahajan, Van-Hai Bui
 Preparing time series dataset from numpy arrays of features and targets
 
 Inspired by Abdulmajid-Murad/deep_probabilistic_forecast

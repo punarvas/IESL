@@ -1,6 +1,6 @@
 """
 @filename: Vistools.py
-@authors: Akash Mahajan, Van Hai Bui
+@authors: Akash Mahajan, Van-Hai Bui
 Visualization tools for regression and model performance
 
 Inspired by Abdulmajid-Murad/deep_probabilistic_forecast

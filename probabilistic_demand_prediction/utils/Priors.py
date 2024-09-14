@@ -1,6 +1,6 @@
 """
 @filename: Priors.py
-@authors: Akash Mahajan, Van Hai Bui
+@authors: Akash Mahajan, Van-Hai Bui
 Prior distributions for probabilistic learning
 
 Inspired by Abdulmajid-Murad/deep_probabilistic_forecast

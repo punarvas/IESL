@@ -1,8 +1,9 @@
 """
 @filename: Network.py
-@authors: Akash Mahajan, Van Hai Bui
+@authors: Akash Mahajan, Van-Hai Bui
 Network architecture configuration and model training
 """
+
 import numpy as np
 from probabilistic_demand_prediction.utils.Priors import Prior
 from torch.nn import Module, ReLU  # For activation function type restriction
