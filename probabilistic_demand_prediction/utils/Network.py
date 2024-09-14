@@ -4,7 +4,7 @@
 Network architecture configuration and model training
 """
 import numpy as np
-from DeepNN.util.Priors import Prior
+from probabilistic_demand_prediction.utils.Priors import Prior
 from torch.nn import Module, ReLU  # For activation function type restriction
 import torch
 from torch.utils.data import DataLoader
