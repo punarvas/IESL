@@ -11,6 +11,7 @@ National Laboratory, for predicting electricity and HVAC demand for next 24 hour
 thorough comparison of Probabilistic and Deterministic approach to prediction is performed.
 
 **Project Structure:**
+- `assets`: Images and other files (non-study, repository purposes only)
 - `utils`: Contains code for data preprocessing, evaluation metrics, visualization, and neural network.
 
 Note: We have used PyCharm Community Edition to write all program files.
