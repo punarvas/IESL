@@ -1,3 +1,5 @@
+![Banner](assets/Picture1.png)
+
 ## Building-level electricity and HVAC demand prediction
 Authors: Akash Mahajan, Van-Hai Bui
 
