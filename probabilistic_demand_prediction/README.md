@@ -20,3 +20,4 @@ Note: We have used PyCharm Community Edition to write all program files.
 **Credits and References:**
 1. [Abdulmajid-Murad @ GitHub, Probabilistic Deep Forecast](https://github.com/Abdulmajid-Murad/deep_probabilistic_forecast) (PyTorch implementation of BNN and MC-LSTM)
 2. [Benchmark Datasets, Office of Energy Efficiency and Renewable Energy](https://bbd.labworks.org/ds/bbd/lbnlbldg59) (Dataset for Building 59)
+3. All images in banner are protected by copyright and are referenced from khsswest.com and umich.edu
