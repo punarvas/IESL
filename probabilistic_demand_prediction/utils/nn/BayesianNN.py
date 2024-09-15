@@ -12,8 +12,8 @@ import torch
 from torch.autograd import Variable
 import torch.nn.functional as func
 import numpy as np
-from probabilistic_demand_prediction.utils.Priors import Prior, GaussianPrior
-from probabilistic_demand_prediction.utils.Network import NetConfig
+from utils.Priors import Prior, GaussianPrior
+from utils.Network import NetConfig
 
 
 class BayesianLayer(nn.Module):

@@ -9,7 +9,7 @@ GitHub page: https://github.com/Abdulmajid-Murad/deep_probabilistic_forecast
 
 import torch.nn as nn
 import torch
-from probabilistic_demand_prediction.utils.Network import NetConfig
+from utils.Network import NetConfig
 from torch.autograd import Variable
 import torch.nn.functional as func
 import numpy as np
