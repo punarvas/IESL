@@ -1,0 +1,23 @@
+{
+  "daewoo": {
+    "url": "https://github.com/punarvas/IESL/raw/main/power_forecast/datasets/daewoo.zip",
+    "target_names": ["Steel_industry_data"],
+    "pathtype":"internet"
+  },
+  "oakridge": {
+    "url": "https://github.com/punarvas/IESL/raw/main/power_forecast/datasets/oakridge.zip",
+    "target_names": ["Building_Base_Cooling", "Building_Base_Heating", "Weather_Base_Cooling", "Weather_Base_Heating"],
+    "pathtype":"internet"
+  },
+  "lawber": {
+    "url": "https://github.com/punarvas/IESL/raw/main/power_forecast/datasets/lawber.zip",
+    "target_names": ["data"],
+    "pathtype": "internet"
+  },
+
+  "new_lawber": {
+    "url": "C:/Users/akash/Documents/IESL/IESL-gh/power_forecast/datasets/new_lawber.zip",
+    "target_names": ["data"],
+    "pathtype": "local"
+  }
+}
